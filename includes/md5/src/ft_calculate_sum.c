@@ -34,30 +34,30 @@ static void			ft_sum_func(size_t i, t_proxy *prox, unsigned int f, unsigned int 
 		prox->b += left_offset(f, g_val.s[i]);
 }
 
-// static void			ft_loop_sum(t_sign *e, t_dig *dig)
-// {
-// 	t_proxy	prox;
-// 	unsigned int	f;
-// 	unsigned int	g;
-// 	size_t	i;
+static void			ft_loop_sum(t_sign *e, t_dig *dig)
+{
+	t_proxy	prox;
+	unsigned int	f;
+	unsigned int	g;
+	size_t	i;
 
-// 	i = 0;
-// 	g = 0;
-// 	f = 0;
-// 	prox.a = e->A;
-// 	prox.b = e->B;
-// 	prox.c = e->C;
-// 	prox.d = e->D;
-// 	while (i < 64)
-// 	{
-// 		ft_sum_func(i, &prox, f, g, dig);
-// 		i++;
-// 	}
-// 	e->A += prox.a;
-// 	e->B += prox.b;
-// 	e->C += prox.c;
-// 	e->D += prox.d;
-// }
+	i = 0;
+	g = 0;
+	f = 0;
+	prox.a = e->A;
+	prox.b = e->B;
+	prox.c = e->C;
+	prox.d = e->D;
+	while (i < 64)
+	{
+		ft_sum_func(i, &prox, f, g, dig);
+		i++;
+	}
+	e->A += prox.a;
+	e->B += prox.b;
+	e->C += prox.c;
+	e->D += prox.d;
+}
 
 void				ft_calculate_sum(t_sign *sign)
 {

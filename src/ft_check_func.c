@@ -19,7 +19,7 @@ void	ft_check_flags(int *i, t_flags *flags, int end, char **argv)
 		else if (!ft_strcmp(argv[*i], "-s"))
 			flags->s = 1;
 		else
-			ft_error(5, argv[0], argv[*i]);
+			ft_error(5, argv[0], argv[*i], argv[1]);
 		(*i)++;
 	}
 	flags->fill = 1;
@@ -32,7 +32,7 @@ int		ft_check_err(int i, int argc, char **argv)
 	{
 		while (i < argc)
 		{
-			ft_error(4, argv[0], argv[i]);
+			ft_error(4, argv[0], argv[i], argv[1]);
 			i++;
 		}
 		return (1);
@@ -48,6 +48,6 @@ int		ft_check_alorythm(char **argv)
 	else if (!ft_strcmp(argv[1], "sha256"))
 		return (1);
 	else
-		ft_error(3, argv[0], argv[1]);
+		ft_error(3, argv[0], argv[1], argv[1]);
 	return (-1);
 }
