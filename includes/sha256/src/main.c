@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daalexan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/27 19:08:03 by daalexan          #+#    #+#             */
+/*   Updated: 2018/10/27 19:08:04 by daalexan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_sha256.h"
 
 unsigned int	g_val256[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
-	0x3956c25b, 0x59f111f1,	0x923f82a4, 0xab1c5ed5,
+	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
 	0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 	0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
@@ -18,7 +30,7 @@ unsigned int	g_val256[64] = {
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
 
-static void	ft_clear(unsigned char *arr)
+void		ft_clear(unsigned char *arr)
 {
 	int i;
 
@@ -27,7 +39,7 @@ static void	ft_clear(unsigned char *arr)
 		arr[i] = 0;
 }
 
-static void		ft_init(t_sign256 *sign)
+void		ft_init(t_sign256 *sign)
 {
 	size_t		bin_len;
 
@@ -37,14 +49,14 @@ static void		ft_init(t_sign256 *sign)
 	sign->end_piece[sign->end_piece_len] = 128;
 	if (sign->end_piece_len <= 55 && sign->end_piece_len)
 	{
-		ft_memcpy(sign->end_piece, sign->message + sign->mess_len - sign->end_piece_len, 
-					sign->end_piece_len);
+		ft_memcpy(sign->end_piece, sign->message + sign->mess_len
+			- sign->end_piece_len, sign->end_piece_len);
 		ft_memcpy((sign->end_piece + 56), &(bin_len), sizeof(size_t));
 	}
 	else if (sign->end_piece_len)
 	{
-		ft_memcpy(sign->end_piece, sign->message + sign->mess_len - sign->end_piece_len, 
-					sign->end_piece_len);
+		ft_memcpy(sign->end_piece, sign->message + sign->mess_len
+			- sign->end_piece_len, sign->end_piece_len);
 		ft_memcpy((sign->end_piece + 56), &(bin_len), sizeof(size_t));
 		sign->adbit = 1;
 	}
@@ -52,8 +64,7 @@ static void		ft_init(t_sign256 *sign)
 		ft_memcpy((sign->end_piece + 56), &(bin_len), sizeof(size_t));
 }
 
-
-t_proxy256			ft_mk_sha256(unsigned char const *message, size_t len)
+t_proxy256	ft_mk_sha256(unsigned char const *message, size_t len)
 {
 	t_sign256	sign;
 

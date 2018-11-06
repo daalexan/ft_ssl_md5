@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_calculate_sum.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daalexan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/27 19:29:30 by daalexan          #+#    #+#             */
+/*   Updated: 2018/10/27 19:29:32 by daalexan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_md5.h"
 
 static unsigned int	left_offset(unsigned int res, unsigned int offset)
@@ -5,58 +17,57 @@ static unsigned int	left_offset(unsigned int res, unsigned int offset)
 	return ((res << offset) | (res >> (32 - offset)));
 }
 
-static void			ft_sum_func(size_t i, t_proxy *prox, unsigned int f, unsigned int g, t_dig *dig)
+static void			ft_sum_func(size_t i, t_proxy *prox, t_value *v, t_dig *dig)
 {
 	if (i <= 15)
-		{
-			f = (prox->b & prox->c) | ((~prox->b) & prox->d);
-			g = i;
-		}
-		else if (i <= 31)
-		{
-			f = (prox->d & prox->b) | ((~prox->d) & prox->c);
-			g = (5 * i + 1) % 16;
-		}
-		else if (i <= 47)
-		{
-			f = prox->b ^ prox->c ^ prox->d;
-			g = (3 * i + 5) % 16;
-		}
-		else
-		{
-			f = prox->c ^ (prox->b | (~prox->d));
-			g = (7 * i) % 16;
-		}
-		f += prox->a + g_val.K[i] + dig->res_arr[g];
-		prox->a = prox->d;
-		prox->d = prox->c;
-		prox->c = prox->b;
-		prox->b += left_offset(f, g_val.s[i]);
+	{
+		v->f = (prox->b & prox->c) | ((~prox->b) & prox->d);
+		v->g = i;
+	}
+	else if (i <= 31)
+	{
+		v->f = (prox->d & prox->b) | ((~prox->d) & prox->c);
+		v->g = (5 * i + 1) % 16;
+	}
+	else if (i <= 47)
+	{
+		v->f = prox->b ^ prox->c ^ prox->d;
+		v->g = (3 * i + 5) % 16;
+	}
+	else
+	{
+		v->f = prox->c ^ (prox->b | (~prox->d));
+		v->g = (7 * i) % 16;
+	}
+	v->f += prox->a + g_val.k[i] + dig->res_arr[v->g];
+	prox->a = prox->d;
+	prox->d = prox->c;
+	prox->c = prox->b;
+	prox->b += left_offset(v->f, g_val.s[i]);
 }
 
 static void			ft_loop_sum(t_sign *e, t_dig *dig)
 {
-	t_proxy	prox;
-	unsigned int	f;
-	unsigned int	g;
-	size_t	i;
+	t_proxy			prox;
+	t_value			val;
+	size_t			i;
 
 	i = 0;
-	g = 0;
-	f = 0;
-	prox.a = e->A;
-	prox.b = e->B;
-	prox.c = e->C;
-	prox.d = e->D;
+	val.g = 0;
+	val.f = 0;
+	prox.a = e->a;
+	prox.b = e->b;
+	prox.c = e->c;
+	prox.d = e->d;
 	while (i < 64)
 	{
-		ft_sum_func(i, &prox, f, g, dig);
+		ft_sum_func(i, &prox, &val, dig);
 		i++;
 	}
-	e->A += prox.a;
-	e->B += prox.b;
-	e->C += prox.c;
-	e->D += prox.d;
+	e->a += prox.a;
+	e->b += prox.b;
+	e->c += prox.c;
+	e->d += prox.d;
 }
 
 void				ft_calculate_sum(t_sign *sign)

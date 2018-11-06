@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256_output.c                                    :+:      :+:    :+:   */
+/*   sha224_output.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daalexan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/27 19:49:18 by daalexan          #+#    #+#             */
-/*   Updated: 2018/10/27 19:49:19 by daalexan         ###   ########.fr       */
+/*   Created: 2018/11/05 12:04:00 by daalexan          #+#    #+#             */
+/*   Updated: 2018/11/05 12:04:08 by daalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static unsigned int		convert_to_32(unsigned int val)
 		(val >> 24 & 0x000000FF));
 }
 
-static void				ft_sha256_edd(t_flags *f, const char *f_name)
+static void				ft_sha224_edd(t_flags *f, const char *f_name)
 {
 	if (f->r && !f->q && !f->stdin)
 	{
@@ -44,7 +44,7 @@ static void				ft_sha_outp(char const *f_name, t_proxy256 *prox,
 	i = 0;
 	if (!f->q && !f->r && !f->stdin)
 	{
-		ft_putstr("SHA256 (");
+		ft_putstr("SHA224 (");
 		if (f->s)
 		{
 			ft_putchar('"');
@@ -56,16 +56,16 @@ static void				ft_sha_outp(char const *f_name, t_proxy256 *prox,
 			ft_putstr(f_name);
 		ft_putstr(") = ");
 	}
-	while (i < 32)
+	while (i < 28)
 	{
 		conv = (unsigned char *)&prox->a + i * sizeof(unsigned char);
 		ft_hex_output(*conv);
 		i++;
 	}
-	ft_sha256_edd(f, f_name);
+	ft_sha224_edd(f, f_name);
 }
 
-void					ft_sha256_output(unsigned char *message, size_t len,
+void					ft_sha224_output(unsigned char *message, size_t len,
 	char const *file, t_flags *f)
 {
 	t_proxy256		prox;
@@ -83,7 +83,7 @@ void					ft_sha256_output(unsigned char *message, size_t len,
 	prox.h = 0;
 	conv = NULL;
 	ptr = NULL;
-	prox = ft_mk_sha256(message, len);
+	prox = ft_mk_sha224(message, len);
 	i = 0;
 	while (i < 8)
 	{

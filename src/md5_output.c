@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   md5_output.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daalexan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/27 19:49:12 by daalexan          #+#    #+#             */
+/*   Updated: 2018/10/27 19:49:13 by daalexan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ssl_md5.h"
 
 static void		ft_md5_edd(t_proxy *prox, char const *f_name, t_flags *f)
 {
-	size_t	i;
-	unsigned char *conv;
-	
+	size_t			i;
+	unsigned char	*conv;
+
 	i = 0;
 	conv = NULL;
 	while (i < 16)
@@ -26,11 +38,12 @@ static void		ft_md5_edd(t_proxy *prox, char const *f_name, t_flags *f)
 		else
 			ft_putstr(f_name);
 	}
-}	
+}
 
-void	ft_md5_output(unsigned char *map, size_t size, char const *f_name, t_flags *f)
+void			ft_md5_output(unsigned char *map, size_t size,
+	char const *f_name, t_flags *f)
 {
-	t_proxy prox;
+	t_proxy	prox;
 
 	prox.a = 0;
 	prox.b = 0;

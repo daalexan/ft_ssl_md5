@@ -1,38 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_calculate_sum.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: daalexan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/27 19:07:52 by daalexan          #+#    #+#             */
+/*   Updated: 2018/10/27 19:07:54 by daalexan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_sha256.h"
 
-static void	ft_calc_offset(t_proxy256 *prox, uint i, uint *value1, uint *value2, uint *buf)
+static void	ft_calc_offset(t_proxy256 *prox, unsigned int i, t_values *val,
+	unsigned int *buf)
 {
-	uint	S1;
-	uint	ch;
-	uint	S0;
-	uint	maj;
+	unsigned int	s1;
+	unsigned int	ch;
+	unsigned int	s0;
+	unsigned int	maj;
 
-	S1 = r_ofst(prox->e, 6) ^ r_ofst(prox->e, 11) ^ r_ofst(prox->e, 25);
+	s1 = r_ofst(prox->e, 6) ^ r_ofst(prox->e, 11) ^ r_ofst(prox->e, 25);
 	ch = (prox->e & prox->f) ^ ((~prox->e) & prox->g);
-	(*value1) = prox->h + S1 + ch + g_val256[i] + buf[i];
-	S0 = r_ofst(prox->a, 2) ^ r_ofst(prox->a, 13) ^ r_ofst(prox->a, 22);
+	(val->value1) = prox->h + s1 + ch + g_val256[i] + buf[i];
+	s0 = r_ofst(prox->a, 2) ^ r_ofst(prox->a, 13) ^ r_ofst(prox->a, 22);
 	maj = (prox->a & prox->b) ^ (prox->a & prox->c) ^ (prox->b & prox->c);
-	(*value2) = S0 + maj;
+	(val->value2) = s0 + maj;
 }
 
-static void	ft_loop_stage(t_proxy256 *prox, uint *buf)
+static void	ft_loop_stage(t_proxy256 *prox, unsigned int *buf)
 {
-	uint	value1;
-	uint	value2;
-	size_t	i;
+	t_values	v;
+	size_t		i;
 
+	v.value1 = 0;
+	v.value2 = 0;
 	i = 0;
 	while (i < 64)
 	{
-		ft_calc_offset(prox, i, &value1, &value2, buf);
+		ft_calc_offset(prox, i, &v, buf);
 		prox->h = prox->g;
 		prox->g = prox->f;
 		prox->f = prox->e;
-		prox->e = prox->d + value1;
+		prox->e = prox->d + v.value1;
 		prox->d = prox->c;
 		prox->c = prox->b;
 		prox->b = prox->a;
-		prox->a = value1 + value2;
+		prox->a = v.value1 + v.value2;
 		i++;
 	}
 }
@@ -40,7 +54,7 @@ static void	ft_loop_stage(t_proxy256 *prox, uint *buf)
 static void	ft_sum_func(t_sign256 *sign, t_dig256 *dig)
 {
 	t_proxy256		prox;
-	uint			buf[64];
+	unsigned int	buf[64];
 
 	prox.a = sign->prox.a;
 	prox.b = sign->prox.b;

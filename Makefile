@@ -17,9 +17,12 @@ FT_SSL_FILES =	src/general.c \
 				src/md5_output.c \
 				src/hex_output.c \
 				src/sha256_output.c \
+				src/sha224_output.c \
 				src/ft_handl_err.c \
 				src/ft_check_func.c \
-				src/ft_rdparse.c
+				src/ft_rdparse.c \
+				src/ft_rdfile.c \
+				src/ft_term_handle.c
 
 OBJ = $(FT_SSL_FILES:.c=.o)
 

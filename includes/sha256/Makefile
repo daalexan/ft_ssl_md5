@@ -9,6 +9,7 @@ CC = gcc
 
 LIB_FILES = ../libft/
 MD5_FILES = src/main.c \
+			src/sha224main.c \
 			src/ft_clrrotconv.c \
 			src/ft_calculate_sum.c			
 				
